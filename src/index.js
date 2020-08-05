@@ -28,8 +28,8 @@ function updateProgress(progress) {
   processingProgress.value = progress.processedBlockCount
 }
 
-function displayOnsets(onsets) {
-  const onsetsString = onsets.map((o) => o.timestamp.s + o.timestamp.n / 1E9).join(', ')
+function displayOnsets(onsetFeatures) {
+  const onsetsString = onsetFeatures.map((o) => o.timestamp.s + o.timestamp.n / 1E9).join(', ')
   onsetsList.innerHTML = `<p>Onsets:</p><p>${onsetsString}</p>`
 }
 
@@ -54,7 +54,7 @@ async function decodeAudioFile(audioFile) {
   return audioContext.decodeAudioData(audioBuffer)
 }
 
-function extractOnsets(audioBuffer) {
+function extractOnsetFeatures(audioBuffer) {
   const extractionRequest = {
     audioData: [...Array(audioBuffer.numberOfChannels).keys()]
     .map(i => audioBuffer.getChannelData(i)),
@@ -68,15 +68,16 @@ function extractOnsets(audioBuffer) {
   }
 
   const promise = new Promise((resolve, reject) => {
-    const onsets = []
+    const onsetFeatures = []
 
+    // WebWorkerStreamingClient#process returns an RxJS Observable
     const streamingResponseObserver = {
       next: streamingResponse => {
         updateProgress(streamingResponse.progress)
-        onsets.push(...streamingResponse.features)
+        onsetFeatures.push(...streamingResponse.features)
       },
       error: err => reject(err),
-      complete: () => resolve(onsets)
+      complete: () => resolve(onsetFeatures)
     }
 
     piperClient.process(extractionRequest).subscribe(streamingResponseObserver)
@@ -93,10 +94,11 @@ async function processFile() {
   const audioBuffer = await decodeAudioFile(file)
   displayAudioProperties(audioBuffer)
 
-  const onsets = await extractOnsets(audioBuffer)
-  displayOnsets(onsets)
+  const onsetFeatures = await extractOnsetFeatures(audioBuffer)
+  displayOnsets(onsetFeatures)
 }
 
+// process chosen audio files
 audioFileChooser.addEventListener('change', processFile)
 
 // list all available plugins in console
