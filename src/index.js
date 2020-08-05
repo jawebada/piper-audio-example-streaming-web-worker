@@ -8,25 +8,107 @@ import {
   OneShotExtractionRequest
 } from 'piper-js/one-shot'
 import {
-  decodeAudioFile
-} from './audio'
+  collect
+} from 'piper-js/streaming'
 
-const worker = new Worker('worker.bundle.js')
-const client = new WebWorkerStreamingClient(worker, countingIdProvider(0))
+const qmPluginsServer = new Worker('worker.bundle.js')
+const piperClient = new WebWorkerStreamingClient(qmPluginsServer, countingIdProvider(0))
+
+const audioFileChooser = document.querySelector('#audioFileChooser')
+const audioInfo = document.querySelector('#audioInfo')
+const processingProgress = document.querySelector('#processingProgress')
+const onsetsList = document.querySelector('#onsetsList')
+
+function resetDisplay() {
+  audioInfo.innerHTML = ''
+  processingProgress.value = 0
+  onsetsList.innerHTML = ''
+}
+
+function displayAudioProperties(audioBuffer) {
+  audioInfo.innerHTML = `Sample rate: ${audioBuffer.sampleRate} Hz, channels: ${audioBuffer.numberOfChannels}, duration: ${audioBuffer.duration} s`
+}
+
+function updateProgress(progress) {
+  processingProgress.max = progress.totalBlockCount
+  processingProgress.value = progress.processedBlockCount
+}
+
+function displayOnsets(onsets) {
+  const onsetsString = onsets.map((o) => o.timestamp.s + o.timestamp.n / 1E9).join(', ')
+  onsetsList.innerHTML = `<p>Onsets:</p><p>${onsetsString}</p>`
+}
+
+function readAudioFile(audioFile) {
+  const fileReader = new FileReader()
+  const promise = new Promise((resolve, reject) => {
+    fileReader.onerror = () => {
+      fileReader.abort()
+      reject(new DOMException('failed to read file'))
+    }
+    fileReader.onload = () => {
+      resolve(fileReader.result)
+    }
+    fileReader.readAsArrayBuffer(audioFile)
+  })
+  return promise
+}
+
+async function decodeAudioFile(audioFile) { 
+  const audioBuffer = await readAudioFile(audioFile)
+  const audioContext = new (window.AudioContext || window.webkitAudioContext)()
+  return audioContext.decodeAudioData(audioBuffer)
+}
+
+function extractOnsets(audioBuffer) {
+  const extractionRequest = {
+    audioData: [...Array(audioBuffer.numberOfChannels).keys()]
+    .map(i => audioBuffer.getChannelData(i)),
+    audioFormat: {
+      sampleRate: audioBuffer.sampleRate,
+      channelCount: audioBuffer.numberOfChannels,
+      length: audioBuffer.length
+    },
+    key: 'qm-vamp-plugins:qm-onsetdetector',
+    outputId: 'onsets'
+  }
+
+  const promise = new Promise((resolve, reject) => {
+    const onsets = []
+
+    const streamingResponseObserver = {
+      next: streamingResponse => {
+        updateProgress(streamingResponse.progress)
+        onsets.push(...streamingResponse.features)
+      },
+      error: err => reject(err),
+      complete: () => resolve(onsets)
+    }
+
+    piperClient.process(extractionRequest).subscribe(streamingResponseObserver)
+  })
+
+  return promise
+}
+
+async function processFile() {
+  resetDisplay()
+
+  const file = audioFileChooser.files[0]
+
+  const audioBuffer = await decodeAudioFile(file)
+  displayAudioProperties(audioBuffer)
+
+  const onsets = await extractOnsets(audioBuffer)
+  displayOnsets(onsets)
+}
+
+audioFileChooser.addEventListener('change', processFile)
 
 // list all available plugins in console
-client.list({}).then((res) => {
+piperClient.list({}).then((res) => {
   console.log('available plugins:')
   for (const p of res.available) {
     console.log(p)
   }
-})
-
-const audioFileChooser = document.querySelector('#audioFileChooser')
-audioFileChooser.addEventListener('change', () => {
-  const file = audioFileChooser.files[0]
-  decodeAudioFile(file).then((audioBuffer) => {
-    const audioInfo = document.querySelector('#audioInfo')
-    audioInfo.innerHTML = "Sample rate: " + audioBuffer.sampleRate + " Hz, channels: " + audioBuffer.numberOfChannels + ", duration: " + audioBuffer.duration + " s"
-  })
 })

@@ -7,8 +7,12 @@ import {
   EmscriptenService
 } from 'piper-js/emscripten'
 import {
+  PiperStreamingService
+} from 'piper-js/streaming'
+import {
   WebWorkerStreamingServer
 } from 'piper-js/web-worker'
 
-const service = new EmscriptenService(QMVampPlugins())
-new WebWorkerStreamingServer(self, service)
+const qmService = new EmscriptenService(QMVampPlugins())
+const streamingService = new PiperStreamingService(qmService)
+new WebWorkerStreamingServer(self, streamingService)
