@@ -4,12 +4,6 @@ import {
   countingIdProvider,
   WebWorkerStreamingClient
 } from 'piper-js/web-worker'
-import {
-  OneShotExtractionRequest
-} from 'piper-js/one-shot'
-import {
-  collect
-} from 'piper-js/streaming'
 
 const qmPluginsServer = new Worker('worker.bundle.js')
 const piperClient = new WebWorkerStreamingClient(qmPluginsServer, countingIdProvider(0))
