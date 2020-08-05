@@ -1,16 +1,18 @@
 {
   "name": "piper-audio-example-minimal",
   "version": "1.0.0",
-  "description": "",
+  "description": "Minimal example for piper-js",
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack && cp src/index.html dist/"
+    "build": "webpack && cp src/index.html dist/",
+    "serve": "serve dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "serve": "^11.3.2",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
   },

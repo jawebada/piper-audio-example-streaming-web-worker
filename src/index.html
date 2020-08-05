@@ -2,10 +2,13 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Output Management</title>
+    <title>Simple piper-js example</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
   </head>
   <body>
+    <input id="audioFileChooser" type="file" accept="audio/*">
+    <div id="audioInfo"></div>
+    <progress value="0" max="100" id="processingProgress"></progress>
     <script src="index.bundle.js"></script>
   </body>
 </html>
