@@ -65,11 +65,15 @@ Web Audio Conference, London, August 2017,
 <li>a proof of concept demo called <a href="https://piper-audio.github.io/ugly-duckling">ugly duckling</a> (<a href="https://github.com/piper-audio/ugly-duckling">Source</a>)</li>
 <li><a href="https://github.com/piper-audio/piper-vamp-js-builds">build scripts for a set of existing VAMP plugins</a></li>
 </ul>
-<p>This demo uses piper-js and the <a href="https://vamp-plugins.org/plugin-doc/qm-vamp-plugins.html#qm-onsetdetector">QM Note Onset
+<p>The <a href="https://piper-audio.github.io/ugly-duckling">ugly duckling</a> is a rather
+complex <a href="https://angular.io/">Angular</a> app written in
+<a href="https://www.typescriptlang.org/">TypeScript</a> (which is great).</p>
+<p>The minimal demo at hand uses piper-js and the <a href="https://vamp-plugins.org/plugin-doc/qm-vamp-plugins.html#qm-onsetdetector">QM Note Onset
 Detector</a>
-to estimate note onset times of an audio file.</p>
+to estimate note onset times of an audio file. It is written in Javascript
+(ES7) and depends only on piper-js.</p>
 <h2>Code</h2>
-<p>The example uses <a href="https://webpack.js.org/">webpack</a> to create two bundles:</p>
+<p>The code uses <a href="https://webpack.js.org/">webpack</a> to create two bundles:</p>
 <ul>
 <li><a href="https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/src/worker.js">worker.js</a>,
 the script executed by a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Worker</a> and</li>

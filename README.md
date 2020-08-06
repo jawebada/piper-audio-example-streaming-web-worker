@@ -43,13 +43,18 @@ Web Audio Conference, London, August 2017,
 * a proof of concept demo called [ugly duckling](https://piper-audio.github.io/ugly-duckling) ([Source](https://github.com/piper-audio/ugly-duckling))
 * [build scripts for a set of existing VAMP plugins](https://github.com/piper-audio/piper-vamp-js-builds)
 
-This demo uses piper-js and the [QM Note Onset
+The [ugly duckling](https://piper-audio.github.io/ugly-duckling) is a rather
+complex [Angular](https://angular.io/) app written in
+[TypeScript](https://www.typescriptlang.org/) (which is great).
+
+The minimal demo at hand uses piper-js and the [QM Note Onset
 Detector](https://vamp-plugins.org/plugin-doc/qm-vamp-plugins.html#qm-onsetdetector)
-to estimate note onset times of an audio file.
+to estimate note onset times of an audio file. It is written in Javascript
+(ES7) and depends only on piper-js.
 
 ## Code
 
-The example uses [webpack](https://webpack.js.org/) to create two bundles: 
+The code uses [webpack](https://webpack.js.org/) to create two bundles: 
 
 * [worker.js](https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/src/worker.js),
   the script executed by a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) and
