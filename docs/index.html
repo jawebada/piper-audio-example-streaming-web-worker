@@ -1,4 +1,5 @@
 <!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Piper Audio Streaming Web Worker Example</title><link href="https://fonts.googleapis.com/css2?family=Cairo&amp;family=Open+Sans&amp;display=swap" rel="stylesheet"><style>body {
+  width: 90vw;
   max-width: 1200px;
   margin-left: auto;
   margin-right: auto;
@@ -23,6 +24,9 @@ aside progress {
   width: 80%;
   margin-left: auto;
   margin-right: auto;
+}
+pre {
+  overflow: scroll;
 }
 </style></head><body><h1>Piper Audio Streaming Web Worker Example</h1><aside class="demo"><h2>Demo</h2><p>Open an audio file to trigger the onsets feature extraction process.</p><p><label for="audioFileChooser">Audio file: </label><input id="audioFileChooser" type="file" accept="audio/*"><div id="audioInfo"></div></p><p><label for="processingProgress">Processing progress: </label><progress value="0" max="100" id="processingProgress"></progress></p><p><div id="onsetsList"></div></p><script src="index.bundle.js"></script></aside><h2>Summary</h2>
 <p>I was looking into how to compile <a href="https://vamp-plugins.org/">VAMP audio analysis
