@@ -1,0 +1,92 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Piper Audio Streaming Web Worker Example</title><link href="https://fonts.googleapis.com/css2?family=Cairo&amp;family=Open+Sans&amp;display=swap" rel="stylesheet"><style>body {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Open Sans', sans-serif;
+}
+h1, h2, h3, h4 {
+  font-family: 'Cairo', sans-serif;
+}
+aside {
+  padding-left: 1rem;
+  margin-left: 1rem;
+  box-shadow: inset 5px 0 5px -5px cornflowerblue;
+  color: cornflowerblue;
+}
+@media screen and (min-width: 800px) {
+  aside {
+    width: 40%;
+    float: right;
+  }
+}
+</style></head><body><h1>Piper Audio Streaming Web Worker Example</h1><aside class="demo"><h2>Demo</h2><p>Open an audio file to trigger the onsets feature extraction process.</p><input id="audioFileChooser" type="file" accept="audio/*"><div id="audioInfo"></div><progress value="0" max="100" id="processingProgress"></progress><div id="onsetsList"></div><script src="index.bundle.js"></script></aside><h2>Summary</h2>
+<p>I was looking into how to compile <a href="https://vamp-plugins.org/">VAMP audio analysis
+plugins</a> into
+<a href="https://developer.mozilla.org/en-US/docs/WebAssembly">WebAssembly</a> modules
+when I stumbled upon <a href="https://github.com/piper-audio/">Piper Audio</a>. The Piper
+Audio documentation was sparse, which is why I created this minimal example.</p>
+<ul>
+<li><a href="https://jawebada.github.com/piper-audio-example-streaming-web-worker">Demo</a></li>
+<li><a href="https://github.com/jawebada/piper-audio-example-streaming-web-worker">Source Code</a></li>
+</ul>
+<h2>Code</h2>
+<h3>The streaming web worker server</h3>
+<pre><code class="language-javascript">import {
+  QMVampPlugins
+} from './QMVampPluginsModule'
+import {
+  EmscriptenService
+} from 'piper-js/emscripten'
+import {
+  PiperStreamingService
+} from 'piper-js/streaming'
+import {
+  WebWorkerStreamingServer
+} from 'piper-js/web-worker'
+
+const qmService = new EmscriptenService(QMVampPlugins())
+const streamingService = new PiperStreamingService(qmService)
+new WebWorkerStreamingServer(self, streamingService)
+</code></pre>
+<h3>The streaming web worker client</h3>
+<pre><code class="language-javascript">import { 
+  countingIdProvider,
+  WebWorkerStreamingClient
+} from 'piper-js/web-worker'
+
+const qmPluginsServer = new Worker('worker.bundle.js')
+const piperClient = new WebWorkerStreamingClient(qmPluginsServer, countingIdProvider(0))
+
+function extractOnsetFeatures(audioBuffer) {
+  const extractionRequest = {
+    audioData: [...Array(audioBuffer.numberOfChannels).keys()]
+    .map(i =&gt; audioBuffer.getChannelData(i)),
+    audioFormat: {
+      sampleRate: audioBuffer.sampleRate,
+      channelCount: audioBuffer.numberOfChannels,
+      length: audioBuffer.length
+    },
+    key: 'qm-vamp-plugins:qm-onsetdetector',
+    outputId: 'onsets'
+  }
+
+  const promise = new Promise((resolve, reject) =&gt; {
+    const onsetFeatures = []
+
+    // WebWorkerStreamingClient#process returns an RxJS Observable
+    const streamingResponseObserver = {
+      next: streamingResponse =&gt; {
+        updateProgress(streamingResponse.progress)
+        onsetFeatures.push(...streamingResponse.features)
+      },
+      error: err =&gt; reject(err),
+      complete: () =&gt; resolve(onsetFeatures)
+    }
+
+    piperClient.process(extractionRequest).subscribe(streamingResponseObserver)
+  })
+
+  return promise
+}
+</code></pre>
+</body></html>
