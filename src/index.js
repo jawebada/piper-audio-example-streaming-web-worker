@@ -23,6 +23,10 @@ function displayAudioProperties(audioBuffer) {
   audioInfo.innerHTML = `Sample rate: ${audioBuffer.sampleRate} Hz<br>Channels: ${audioBuffer.numberOfChannels}<br>Duration: ${audioBuffer.duration} s`
 }
 
+function displayError(error) {
+  audioInfo.innerHTML = `<em>Error: ${error}</em>`
+}
+
 function updateProgress(progress) {
   processingProgress.max = progress.totalBlockCount
   processingProgress.value = progress.processedBlockCount
@@ -91,11 +95,15 @@ async function processFile() {
 
   const file = audioFileChooser.files[0]
 
-  const audioBuffer = await decodeAudioFile(file)
-  displayAudioProperties(audioBuffer)
+  try {
+    const audioBuffer = await decodeAudioFile(file)
+    displayAudioProperties(audioBuffer)
 
-  const onsetFeatures = await extractOnsetFeatures(audioBuffer)
-  displayOnsets(onsetFeatures)
+    const onsetFeatures = await extractOnsetFeatures(audioBuffer)
+    displayOnsets(onsetFeatures)
+  } catch (error) {
+    displayError(`the file '${file.name}' could not be processed (${error})`)
+  }
 }
 
 // process chosen audio files
