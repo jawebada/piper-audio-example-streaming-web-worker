@@ -129,6 +129,12 @@ npm run build
 npm run serve
 ```
 
-## License
+## Licence
 
-[BSD](https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/LICENSE)
+[QMVampPlugins module](https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/src/QMVampPlugins.umd.js): 
+
+Copyright (c) 2015-2017 Queen Mary, University of London, provided under a BSD-style licence.
+
+Example code:
+
+Copyright (c) 2020, Jan Weil, provided under a [BSD-style licence](https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/LICENSE)
