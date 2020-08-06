@@ -30,6 +30,13 @@ Audio documentation was sparse, which is why I created this minimal example.</p>
 <li><a href="https://github.com/jawebada/piper-audio-example-streaming-web-worker">Source Code</a></li>
 </ul>
 <h2>Code</h2>
+<p>The example uses <a href="https://webpack.js.org/">webpack</a> to create two bundles:</p>
+<ul>
+<li><a href="https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/src/worker.js">worker.js</a>,
+the script executed by a <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Worker</a> and</li>
+<li><a href="https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/src/index.js">index.js</a>,
+which starts the web worker and a client talking to it.</li>
+</ul>
 <h3>The streaming web worker server</h3>
 <pre><code class="language-javascript">import {
   QMVampPlugins

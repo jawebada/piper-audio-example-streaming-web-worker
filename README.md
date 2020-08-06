@@ -11,6 +11,13 @@ Audio documentation was sparse, which is why I created this minimal example.
 
 ## Code
 
+The example uses [webpack](https://webpack.js.org/) to create two bundles: 
+
+* [worker.js](https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/src/worker.js),
+  the script executed by a [Web Worker](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API) and
+* [index.js](https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/src/index.js),
+  which starts the web worker and a client talking to it.
+
 ### The streaming web worker server
 
 ```javascript
