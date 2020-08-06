@@ -19,7 +19,12 @@ aside {
     float: right;
   }
 }
-</style></head><body><h1>Piper Audio Streaming Web Worker Example</h1><aside class="demo"><h2>Demo</h2><p>Open an audio file to trigger the onsets feature extraction process.</p><input id="audioFileChooser" type="file" accept="audio/*"><div id="audioInfo"></div><progress value="0" max="100" id="processingProgress"></progress><div id="onsetsList"></div><script src="index.bundle.js"></script></aside><h2>Summary</h2>
+aside progress {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+</style></head><body><h1>Piper Audio Streaming Web Worker Example</h1><aside class="demo"><h2>Demo</h2><p>Open an audio file to trigger the onsets feature extraction process.</p><p><label for="audioFileChooser">Audio file: </label><input id="audioFileChooser" type="file" accept="audio/*"><div id="audioInfo"></div></p><p><label for="processingProgress">Processing progress: </label><progress value="0" max="100" id="processingProgress"></progress></p><p><div id="onsetsList"></div></p><script src="index.bundle.js"></script></aside><h2>Summary</h2>
 <p>I was looking into how to compile <a href="https://vamp-plugins.org/">VAMP audio analysis
 plugins</a> into
 <a href="https://developer.mozilla.org/en-US/docs/WebAssembly">WebAssembly</a> modules
@@ -29,6 +34,40 @@ Audio documentation was sparse, which is why I created this minimal example.</p>
 <li><a href="https://jawebada.github.com/piper-audio-example-streaming-web-worker">Demo</a></li>
 <li><a href="https://github.com/jawebada/piper-audio-example-streaming-web-worker">Source Code</a></li>
 </ul>
+<h2>Introduction</h2>
+<p>In Machine Learning,
+<a href="https://en.wikipedia.org/wiki/Feature_extraction">Feature Extraction</a>
+is the attempt to transfer some form of input data (text, image, audio, etc.)
+into a, supposedly, more compact and more appropriate format (features) for the
+task at hand.</p>
+<p>The <a href="https://vamp-plugins.org">VAMP</a> system defines a standard plugin API for
+feature extraction from audio signals. The most prominent VAMP host making use
+of this API to visualise the traits of an audio signal is <a href="https://www.sonicvisualiser.org/">Sonic
+Visualiser</a>. Both the VAMP API and Sonic
+Visualiser have been developed at <a href="http://c4dm.eecs.qmul.ac.uk/">the center for digital Music
+(C4DM)</a>, a research group of the <a href="https://www.qmul.ac.uk/">Queen Mary
+University of London (QMUL)</a>.</p>
+<p><a href="https://github.com/piper-audio">Piper Audio</a> is/was a</p>
+<blockquote>
+<p>project of C4DM to explore audio analysis using browser technology,
+Javascript, and network protocols.</p>
+</blockquote>
+<p>It was introduced in <a href="https://qmro.qmul.ac.uk/xmlui/handle/123456789/26163">L. Thompson, C. Cannam, and M. Sandler, “Piper: Audio
+Feature Extraction in Browser and Mobile Applications,” in Proceedings of 3rd
+Web Audio Conference, London, August 2017,
+2017</a>
+(<a href="https://youtu.be/OpUeyRRPpCo?t=33m10s">Video</a>) and comprises</p>
+<ul>
+<li>a <a href="https://github.com/piper-audio/piper">protocol schema</a></li>
+<li><a href="https://github.com/piper-audio/piper-vamp-cpp">C++ support code for Piper including adaptation to Vamp plugin SDK</a></li>
+<li>an <a href="https://github.com/piper-audio/piper-vamp-js">adapter to turn Vamp plugins into Piper modules, usually with Emscripten</a></li>
+<li><a href="https://github.com/piper-audio/piper-js">piper-js</a>, a library for building Piper servers and clients with Javascript</li>
+<li>a proof of concept demo called <a href="https://piper-audio.github.io/ugly-duckling">ugly duckling</a> (<a href="https://github.com/piper-audio/ugly-duckling">Source</a>)</li>
+<li><a href="https://github.com/piper-audio/piper-vamp-js-builds">build scripts for a set of existing VAMP plugins</a></li>
+</ul>
+<p>This demo uses piper-js and the <a href="https://vamp-plugins.org/plugin-doc/qm-vamp-plugins.html#qm-onsetdetector">QM Note Onset
+Detector</a>
+to estimate note onset times of an audio file.</p>
 <h2>Code</h2>
 <p>The example uses <a href="https://webpack.js.org/">webpack</a> to create two bundles:</p>
 <ul>
@@ -96,4 +135,11 @@ function extractOnsetFeatures(audioBuffer) {
   return promise
 }
 </code></pre>
+<h2>Building</h2>
+<pre><code>npm install
+npm run build
+npm run serve
+</code></pre>
+<h2>License</h2>
+<p><a href="https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/LICENSE">BSD</a></p>
 </body></html>

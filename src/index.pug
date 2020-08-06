@@ -11,10 +11,15 @@ html
     aside(class='demo')
       h2 Demo
       p Open an audio file to trigger the onsets feature extraction process.
-      input(id='audioFileChooser' type='file' accept='audio/*')
-      div(id='audioInfo')
-      progress(value='0' max='100' id='processingProgress')
-      div(id='onsetsList')
+      p
+        label(for='audioFileChooser') Audio file: 
+        input(id='audioFileChooser' type='file' accept='audio/*')
+        div(id='audioInfo')
+      p
+        label(for='processingProgress') Processing progress: 
+        progress(value='0' max='100' id='processingProgress')
+      p
+        div(id='onsetsList')
       script(src='index.bundle.js')
 
     include:markdown-it ../README.md

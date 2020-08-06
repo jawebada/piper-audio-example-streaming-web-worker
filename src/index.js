@@ -20,7 +20,7 @@ function resetDisplay() {
 }
 
 function displayAudioProperties(audioBuffer) {
-  audioInfo.innerHTML = `Sample rate: ${audioBuffer.sampleRate} Hz, channels: ${audioBuffer.numberOfChannels}, duration: ${audioBuffer.duration} s`
+  audioInfo.innerHTML = `Sample rate: ${audioBuffer.sampleRate} Hz<br>Channels: ${audioBuffer.numberOfChannels}<br>Duration: ${audioBuffer.duration} s`
 }
 
 function updateProgress(progress) {
@@ -30,7 +30,7 @@ function updateProgress(progress) {
 
 function displayOnsets(onsetFeatures) {
   const onsetsString = onsetFeatures.map((o) => o.timestamp.s + o.timestamp.n / 1E9).join(', ')
-  onsetsList.innerHTML = `<h3>Onset Positions:</h3><p>${onsetsString}</p>`
+  onsetsList.innerHTML = `<h3>Onset Positions (seconds)</h3><p>${onsetsString}</p>`
 }
 
 function readAudioFile(audioFile) {
