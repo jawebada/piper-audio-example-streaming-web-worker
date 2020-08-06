@@ -9,6 +9,44 @@ Audio documentation was sparse, which is why I created this minimal example.
 * [Demo](https://jawebada.github.com/piper-audio-example-streaming-web-worker)
 * [Source Code](https://github.com/jawebada/piper-audio-example-streaming-web-worker)
 
+## Introduction
+
+In Machine Learning, 
+[Feature Extraction](https://en.wikipedia.org/wiki/Feature_extraction)
+is the attempt to transfer some form of input data (text, image, audio, etc.)
+into a, supposedly, more compact and more appropriate format (features) for the
+task at hand.
+
+The [VAMP](https://vamp-plugins.org) system defines a standard plugin API for
+feature extraction from audio signals. The most prominent VAMP host making use
+of this API to visualise the traits of an audio signal is [Sonic
+Visualiser](https://www.sonicvisualiser.org/). Both the VAMP API and Sonic
+Visualiser have been developed at [the center for digital Music
+(C4DM)](http://c4dm.eecs.qmul.ac.uk/), a research group of the [Queen Mary
+University of London (QMUL)](https://www.qmul.ac.uk/).
+
+[Piper Audio](https://github.com/piper-audio) is/was a
+
+> project of C4DM to explore audio analysis using browser technology,
+> Javascript, and network protocols.
+
+It was introduced in [L. Thompson, C. Cannam, and M. Sandler, “Piper: Audio
+Feature Extraction in Browser and Mobile Applications,” in Proceedings of 3rd
+Web Audio Conference, London, August 2017,
+2017](https://qmro.qmul.ac.uk/xmlui/handle/123456789/26163)
+([Video](https://youtu.be/OpUeyRRPpCo?t=33m10s)) and comprises
+
+* a [protocol schema](https://github.com/piper-audio/piper)
+* [C++ support code for Piper including adaptation to Vamp plugin SDK](https://github.com/piper-audio/piper-vamp-cpp)
+* an [adapter to turn Vamp plugins into Piper modules, usually with Emscripten](https://github.com/piper-audio/piper-vamp-js)
+* [piper-js](https://github.com/piper-audio/piper-js), a library for building Piper servers and clients with Javascript
+* a proof of concept demo called [ugly duckling](https://piper-audio.github.io/ugly-duckling) ([Source](https://github.com/piper-audio/ugly-duckling))
+* [build scripts for a set of existing VAMP plugins](https://github.com/piper-audio/piper-vamp-js-builds)
+
+This demo uses piper-js and the [QM Note Onset
+Detector](https://vamp-plugins.org/plugin-doc/qm-vamp-plugins.html#qm-onsetdetector)
+to estimate note onset times of an audio file.
+
 ## Code
 
 The example uses [webpack](https://webpack.js.org/) to create two bundles: 
@@ -82,3 +120,15 @@ function extractOnsetFeatures(audioBuffer) {
   return promise
 }
 ```
+
+## Building
+
+```
+npm install
+npm run build
+npm run serve
+```
+
+## License
+
+[BSD](https://github.com/jawebada/piper-audio-example-streaming-web-worker/blob/master/LICENSE)
