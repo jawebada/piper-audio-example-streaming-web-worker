@@ -30,7 +30,7 @@ function updateProgress(progress) {
 
 function displayOnsets(onsetFeatures) {
   const onsetsString = onsetFeatures.map((o) => o.timestamp.s + o.timestamp.n / 1E9).join(', ')
-  onsetsList.innerHTML = `<p>Onsets:</p><p>${onsetsString}</p>`
+  onsetsList.innerHTML = `<h3>Onset Positions:</h3><p>${onsetsString}</p>`
 }
 
 function readAudioFile(audioFile) {

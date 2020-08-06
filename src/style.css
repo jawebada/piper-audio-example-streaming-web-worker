@@ -1,0 +1,21 @@
+body {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  font-family: 'Open Sans', sans-serif;
+}
+h1, h2, h3, h4 {
+  font-family: 'Cairo', sans-serif;
+}
+aside {
+  padding-left: 1rem;
+  margin-left: 1rem;
+  box-shadow: inset 5px 0 5px -5px cornflowerblue;
+  color: cornflowerblue;
+}
+@media screen and (min-width: 800px) {
+  aside {
+    width: 40%;
+    float: right;
+  }
+}

@@ -5,13 +5,16 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack && cp src/index.html dist/",
+    "build": "webpack && pug src/index.pug -o dist",
     "serve": "serve dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "jstransformer-markdown-it": "^2.1.0",
+    "pug-cli": "^1.0.0-alpha6",
     "serve": "^11.3.2",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"

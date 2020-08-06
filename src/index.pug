@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    meta(name='viewport' content='width=device-width, initial-scale=1.0')
+    title Piper Audio Streaming Web Worker Example
+    link(href='https://fonts.googleapis.com/css2?family=Cairo&family=Open+Sans&display=swap' rel='stylesheet')
+    style
+      include style.css
+  body
+    h1 Piper Audio Streaming Web Worker Example
+    aside(class='demo')
+      h2 Demo
+      p Open an audio file to trigger the onsets feature extraction process.
+      input(id='audioFileChooser' type='file' accept='audio/*')
+      div(id='audioInfo')
+      progress(value='0' max='100' id='processingProgress')
+      div(id='onsetsList')
+      script(src='index.bundle.js')
+
+    include:markdown-it ../README.md
