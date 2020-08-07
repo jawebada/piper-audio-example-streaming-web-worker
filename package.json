@@ -5,6 +5,7 @@
   "private": true,
   "scripts": {
     "build": "webpack && pug src/index.pug -o docs",
+    "watch": "webpack --watch",
     "serve": "serve docs"
   },
   "keywords": [
