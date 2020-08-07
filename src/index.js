@@ -30,9 +30,8 @@ function displayError(error) {
   audioInfo.innerHTML = `<em>Error: ${error}</em>`
 }
 
-function updateProgress(progress) {
-  processingProgress.max = progress.totalBlockCount
-  processingProgress.value = progress.processedBlockCount
+function updateProgress(percent) {
+  processingProgress.value = percent
 }
 
 function displayOnsets(onsetFeatureCollection) {
@@ -74,8 +73,14 @@ function extractOnsetFeatures(audioBuffer) {
     outputId: 'onsets'
   }
 
+  let percent = 0
+
   return collect(piperClient.process(extractionRequest), (streamingResponse) => {
-    updateProgress(streamingResponse.progress)
+    const currentPercent = Math.round(100.0 * streamingResponse.progress.processedBlockCount / streamingResponse.progress.totalBlockCount)
+    if (currentPercent > percent) {
+      percent = currentPercent
+      updateProgress(percent)
+    }
   })
 }
 
