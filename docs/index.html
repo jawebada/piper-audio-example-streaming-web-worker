@@ -107,6 +107,9 @@ new WebWorkerStreamingServer(self, streamingService)
   countingIdProvider,
   WebWorkerStreamingClient
 } from 'piper-js/web-worker'
+import {
+  collect
+} from 'piper-js/streaming'
 
 const qmPluginsServer = new Worker('worker.bundle.js')
 const piperClient = new WebWorkerStreamingClient(qmPluginsServer, countingIdProvider(0))
@@ -124,23 +127,9 @@ function extractOnsetFeatures(audioBuffer) {
     outputId: 'onsets'
   }
 
-  const promise = new Promise((resolve, reject) =&gt; {
-    const onsetFeatures = []
-
-    // WebWorkerStreamingClient#process returns an RxJS Observable
-    const streamingResponseObserver = {
-      next: streamingResponse =&gt; {
-        updateProgress(streamingResponse.progress)
-        onsetFeatures.push(...streamingResponse.features)
-      },
-      error: err =&gt; reject(err),
-      complete: () =&gt; resolve(onsetFeatures)
-    }
-
-    piperClient.process(extractionRequest).subscribe(streamingResponseObserver)
+  return collect(piperClient.process(extractionRequest), (streamingResponse) =&gt; {
+    updateProgress(streamingResponse.progress)
   })
-
-  return promise
 }
 </code></pre>
 <h2>Building</h2>

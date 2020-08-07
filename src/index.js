@@ -4,6 +4,9 @@ import {
   countingIdProvider,
   WebWorkerStreamingClient
 } from 'piper-js/web-worker'
+import {
+  collect
+} from 'piper-js/streaming'
 
 const qmPluginsServer = new Worker('worker.bundle.js')
 const piperClient = new WebWorkerStreamingClient(qmPluginsServer, countingIdProvider(0))
@@ -32,8 +35,8 @@ function updateProgress(progress) {
   processingProgress.value = progress.processedBlockCount
 }
 
-function displayOnsets(onsetFeatures) {
-  const onsetsString = onsetFeatures.map((o) => o.timestamp.s + o.timestamp.n / 1E9).join(', ')
+function displayOnsets(onsetFeatureCollection) {
+  const onsetsString = onsetFeatureCollection.collected.map((o) => o.timestamp.s + o.timestamp.n / 1E9).join(', ')
   onsetsList.innerHTML = `<h3>Onset Positions (seconds)</h3><p>${onsetsString}</p>`
 }
 
@@ -71,23 +74,9 @@ function extractOnsetFeatures(audioBuffer) {
     outputId: 'onsets'
   }
 
-  const promise = new Promise((resolve, reject) => {
-    const onsetFeatures = []
-
-    // WebWorkerStreamingClient#process returns an RxJS Observable
-    const streamingResponseObserver = {
-      next: streamingResponse => {
-        updateProgress(streamingResponse.progress)
-        onsetFeatures.push(...streamingResponse.features)
-      },
-      error: err => reject(err),
-      complete: () => resolve(onsetFeatures)
-    }
-
-    piperClient.process(extractionRequest).subscribe(streamingResponseObserver)
+  return collect(piperClient.process(extractionRequest), (streamingResponse) => {
+    updateProgress(streamingResponse.progress)
   })
-
-  return promise
 }
 
 async function processFile() {
@@ -99,8 +88,8 @@ async function processFile() {
     const audioBuffer = await decodeAudioFile(file)
     displayAudioProperties(audioBuffer)
 
-    const onsetFeatures = await extractOnsetFeatures(audioBuffer)
-    displayOnsets(onsetFeatures)
+    const onsetFeatureCollection = await extractOnsetFeatures(audioBuffer)
+    displayOnsets(onsetFeatureCollection)
   } catch (error) {
     displayError(`the file '${file.name}' could not be processed (${error})`)
   }
