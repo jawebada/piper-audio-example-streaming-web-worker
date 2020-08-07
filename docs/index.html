@@ -8,6 +8,11 @@
 h1, h2, h3, h4 {
   font-family: 'Cairo', sans-serif;
 }
+#piperAudioLogo {
+  width: 100px;
+  float: right;
+  margin: 0 0 20px 20px;
+}
 aside {
   padding-left: 1rem;
   margin-left: 1rem;
@@ -18,6 +23,7 @@ aside {
   aside {
     width: 40%;
     float: right;
+    clear: right;
   }
 }
 aside progress {
@@ -28,7 +34,7 @@ aside progress {
 pre {
   overflow: auto;
 }
-</style></head><body><h1>Piper Audio Streaming Web Worker Example</h1><aside class="demo"><h2>Demo</h2><p>Open an audio file to trigger the onsets feature extraction process.</p><p><label for="audioFileChooser">Audio file: </label><input id="audioFileChooser" type="file" accept="audio/*"><div id="audioInfo"></div></p><p><label for="processingProgress">Processing progress: </label><progress value="0" max="100" id="processingProgress"></progress></p><p><div id="onsetsList"></div></p><script src="index.bundle.js"></script></aside><h2>Summary</h2>
+</style></head><body><img src="https://github.com/piper-audio.png" id="piperAudioLogo"><h1>Piper Audio Streaming Web Worker Example</h1><aside class="demo"><h2>Demo</h2><p>Open an audio file to trigger the onsets feature extraction process.</p><p><label for="audioFileChooser">Audio file: </label><input id="audioFileChooser" type="file" accept="audio/*"><div id="audioInfo"></div></p><p><label for="processingProgress">Processing progress: </label><progress value="0" max="100" id="processingProgress"></progress></p><p><div id="onsetsList"></div></p><script src="index.bundle.js"></script></aside><h2>Summary</h2>
 <p>I was looking into how to compile <a href="https://vamp-plugins.org/">VAMP audio analysis
 plugins</a> into
 <a href="https://developer.mozilla.org/en-US/docs/WebAssembly">WebAssembly</a> modules
