@@ -109,8 +109,16 @@ function extractOnsetFeatures(audioBuffer) {
     outputId: 'onsets'
   }
 
+  let percent = 0
+
   return collect(piperClient.process(extractionRequest), (streamingResponse) => {
-    updateProgress(streamingResponse.progress)
+    const currentPercent = Math.round(100.0 * streamingResponse.progress.processedBlockCount / streamingResponse.progress.totalBlockCount)
+
+    // reduce the amount of progress updates
+    if (currentPercent > percent) {
+      percent = currentPercent
+      updateProgress(percent)
+    }
   })
 }
 ```

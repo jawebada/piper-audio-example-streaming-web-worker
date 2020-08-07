@@ -19,6 +19,7 @@ const onsetsList = document.querySelector('#onsetsList')
 function resetDisplay() {
   audioInfo.innerHTML = ''
   processingProgress.value = 0
+  processingProgress.max = 100
   onsetsList.innerHTML = ''
 }
 
@@ -77,6 +78,8 @@ function extractOnsetFeatures(audioBuffer) {
 
   return collect(piperClient.process(extractionRequest), (streamingResponse) => {
     const currentPercent = Math.round(100.0 * streamingResponse.progress.processedBlockCount / streamingResponse.progress.totalBlockCount)
+
+    // reduce the amount of progress updates
     if (currentPercent > percent) {
       percent = currentPercent
       updateProgress(percent)
