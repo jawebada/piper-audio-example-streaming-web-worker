@@ -7,7 +7,7 @@ module.exports = {
     index: './src/index.js',
     worker: './src/worker.js'
   },
-  devtool: 'inline-source-map',
+  devtool: 'source-map',
   plugins: [
   ],
   output: {
