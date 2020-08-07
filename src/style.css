@@ -26,5 +26,5 @@ aside progress {
   margin-right: auto;
 }
 pre {
-  overflow: scroll;
+  overflow: auto;
 }
