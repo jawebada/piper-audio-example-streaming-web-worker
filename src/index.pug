@@ -6,6 +6,7 @@ html
     link(href='https://fonts.googleapis.com/css2?family=Cairo&family=Open+Sans&display=swap' rel='stylesheet')
     style
       include style.css
+    script(src='index.bundle.js' defer)
   body
     img(src='https://github.com/piper-audio.png' id='piperAudioLogo')
     h1 Piper Audio Streaming Web Worker Example
@@ -19,8 +20,6 @@ html
       p
         label(for='processingProgress') Processing progress: 
         progress(value='0' max='100' id='processingProgress')
-      p
-        div(id='onsetsList')
-      script(src='index.bundle.js')
+      div(id='onsetsList')
 
     include:markdown-it ../README.md
