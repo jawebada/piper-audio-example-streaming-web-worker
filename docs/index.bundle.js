@@ -29120,7 +29120,12 @@ function readAudioFile(audioFile) {
 async function decodeAudioFile(audioFile) { 
   const audioBuffer = await readAudioFile(audioFile)
   const audioContext = new (window.AudioContext || window.webkitAudioContext)()
-  return audioContext.decodeAudioData(audioBuffer)
+  try {
+    return audioContext.decodeAudioData(audioBuffer)
+  } catch (e) {
+    console.warn(`${e}: Falling back to callback style decodeAudioData.`);
+    return new Promise((res, rej) => audioContext.decodeAudioData(audioBuffer, res, rej))
+  }
 }
 
 function extractOnsetFeatures(audioBuffer) {
