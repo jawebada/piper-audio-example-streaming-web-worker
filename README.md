@@ -6,7 +6,7 @@ plugins](https://vamp-plugins.org/) into
 when I stumbled upon [Piper Audio](https://github.com/piper-audio/). The Piper
 Audio documentation was sparse, which is why I created this minimal example.
 
-* [Demo](https://jawebada.github.com/piper-audio-example-streaming-web-worker)
+* [Demo](https://jawebada.github.io/piper-audio-example-streaming-web-worker)
 * [Source Code](https://github.com/jawebada/piper-audio-example-streaming-web-worker)
 
 ## Introduction
